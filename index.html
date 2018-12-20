@@ -52,13 +52,14 @@
 
       for(var i = 0; i < sampleList.length; i++) {
         var sample = sampleList[i];
-        var sampleName = sample._src.split('/')[sample._src.split('/').length - 1];
+        var sampleName = sampleNames[i];
+        var sampleNameExtensionLess = sampleName.split(".")[0];
 
         $(".row").append(`
-          <div class="col s2">
+          <div class="col s2 m4">
             <div class="padkey card ` + idleCardColor + `" data-sample-id="` + i + `">
               <div class="card-content white-text">
-                <span class="">` + sampleName + `</span>
+                <span class="">` + sampleNameExtensionLess + `</span>
               </div>
             </div>
           </div>
@@ -71,7 +72,7 @@
           $(this).addClass(playingCardColor);
       });
 
-      $(".padkey").on('touchend mouseup', function(){
+      $(".padkey").on('touchend mouseup touchcancel mouseleave', function(){
           $(this).removeClass(playingCardColor);
           $(this).addClass(idleCardColor);
       });
