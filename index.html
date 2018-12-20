@@ -6,24 +6,87 @@
   </head>
   <body>
 
-    <script src="https://unpkg.com/display.js"></script>
+    <script src="https://unpkg.com/display.js"></script><script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.1.0/howler.core.min.js"></script>
 
-    <p id="test">test audio</p>
-
+    <div class="container">
+      <div class="row">
+      </div>
+    </div>
     <script type="text/javascript">
 
-      var $ = new DisplayJS(window);
+      // SAMPLES BUILDING
+      var sampleList = [];
 
-      var sound = new Howl({
-        src: ['samples/fais_chier.mp3']
-      }).play();
+      var sampleFolder = "samples"
+      var sampleNames = [
+        'fais chier.mp3',
+        'ah mon survet tout neuf.mp3',
+        'allez mon scooter stenculé.mp3',
+        'jsuis dégoûté.mp3',
+        'laccroche que dalle la.mp3',
+        'putain jai niqué mon survet et mes chaussures aussi.mp3',
+        'putain jai niqué mon survet fait chier.mp3',
+        'sa grand mère la PUTE.mp3',
+        'SA GRAND MERE.mp3',
+        'scooter de merde.mp3',
+        'tes_morts.mp3'
+      ];
 
-      $.on($.select("#test"), "click", function () {
-        sound.play();
-      })
+      for(var j = 0; j < sampleNames.length; j++) {
+        sampleList[j] = new Howl({
+          src: [sampleFolder + "/" + sampleNames[j]]
+        });
+      }
+
+
+      // TEMPLATING
+      var idleCardColor = "red lighten-1";
+      var playingCardColor = "red lighten-3";
+
+      for(var i = 0; i < sampleList.length; i++) {
+        var sample = sampleList[i];
+        var sampleName = sample._src.split('/')[sample._src.split('/').length - 1];
+
+        $(".row").append(`
+          <div class="col s2">
+            <div class="padkey card ` + idleCardColor + `" data-sample-id="` + i + `">
+              <div class="card-content white-text">
+                <span class="">` + sampleName + `</span>
+              </div>
+            </div>
+          </div>
+        `);
+      }
+
+      // EVENTS
+      $(".padkey").on('touchstart mousedown', function(){
+          $(this).removeClass(idleCardColor);
+          $(this).addClass(playingCardColor);
+      });
+
+      $(".padkey").on('touchend mouseup', function(){
+          $(this).removeClass(playingCardColor);
+          $(this).addClass(idleCardColor);
+      });
+
+      $(".padkey").click(function() {
+        var padClicked = this;
+        var sampleId = $(padClicked).attr("data-sample-id");
+        $(padClicked).removeClass("pulse")
+        $(padClicked).addClass("pulse")
+        sampleList[sampleId].play();
+
+        sampleList[sampleId].on('end', function(){
+          $(padClicked).removeClass("pulse");
+        });
+      });
 
     </script>
 
