@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+
+    <script src="https://unpkg.com/display.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.1.0/howler.core.min.js"></script>
+
+    <p id="test">test audio</p>
+
+    <script type="text/javascript">
+
+      var $ = new DisplayJS(window);
+
+      var sound = new Howl({
+        src: ['samples/fais_chier.mp3']
+      }).play();
+
+      $.on($.select("#test"), "click", function () {
+        sound.play();
+      })
+
+    </script>
+
+  </body>
+</html>
